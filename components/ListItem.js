@@ -1,10 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import Icon  from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default function ListItem({ item, handleList }) {
     return (
         <TouchableOpacity onPress={() => handleList(item.key)}>
-            <Text style={styles.item}>{item.name}</Text>
+            <View style={styles.item}>
+                <Icon name="delete" size={18} color='black'/>
+                <Text style={styles.itemText}>{item.name}</Text>
+            </View>
         </TouchableOpacity>
     )
 }
@@ -12,10 +16,14 @@ export default function ListItem({ item, handleList }) {
 const styles = StyleSheet.create({
     item: {
         padding: 18,
-        marginTop : 18,
+        marginTop: 18,
         borderColor: '#bbb',
         borderWidth: 1,
         borderStyle: 'dashed',
         borderRadius: 10,
+        flexDirection: 'row',
+    },
+    itemText: {
+        marginLeft: 10,
     }
 });

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Header from './components/header';
 import ListItem from './components/ListItem';
 import AddList from './components/addList';
+import Sandbox from './components/sandbox';
 
 export default function App() {
   const [lists, setLists] = useState([
@@ -19,32 +20,41 @@ export default function App() {
   }
 
   const submitHandler = (name) => {
+    if (name.length > 0) {
       setLists((prevLists) => {
         return [
-          {name: name, key: Math.random().toString()},
+          { name: name, key: Math.random().toString() },
           ...prevLists,
         ]
       })
-  } 
+    } else {
+      Alert.alert('Whoops!', 'Please Enter somthing before adding...!', [
+        { text: 'Got it', onPress: () => console.log('user agreed..!') }
+      ]);
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      {/* header */}
-      <Header />
-      <View style={styles.content}>
-        {/* form */}
-        <AddList submitHandler={submitHandler} />
-        <View style={styles.list}>
-          <FlatList
-            data={lists}
-            renderItem={({ item }) => (
-              <ListItem item={item} handleList={handleList} />
-            )}
-          />
+    // <SandBox />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        {/* header */}
+        <Header />
+        <View style={styles.content}>
+          {/* form */}
+          <AddList submitHandler={submitHandler} />
+          <View style={styles.list}>
+            <FlatList
+              data={lists}
+              renderItem={({ item }) => (
+                <ListItem item={item} handleList={handleList} />
+              )}
+            />
+          </View>
         </View>
-      </View>
 
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -55,8 +65,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 40,
+    flex: 1,
   },
   list: {
     marginTop: 20,
+    flex: 1,
   },
 });
